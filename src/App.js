@@ -1,15 +1,12 @@
-//steps
-/*
--first mistake was not realize i had to create an array of votes for each unique anecdote. 
--Then I had to populate the original useState of the votes hook (need to figure out how to properly articulate this) to be an empty array of the lenght of the anecdotes array
-let l = new Array(anc.length).fill(0)
--after createing the array I had to create an event handler for clicking the votes button. this handler would copy the array into a new variable, and update a specific element of that array based on what the current selected anecdote was (incrementing the vote)
--i then displayed the specific element of the votes array whose index corresponded with the selected anecdote
--Extra: finally I made it so that no two anecdotes could repeat, as simply generating a random element could result in repeats. This was done but simply updating the newAnecdote function by adding a conditional to see if the random number genrated was the same index of the anecdotes array that was previously displayed. if so it would loop until the random number was different.
-
-*/
-
 import React, { useState } from 'react'
+
+const Header = ({ text }) => {
+  return (
+    <>
+      <h3>{text}</h3>
+    </>
+  )
+}
 
 const Button = ({ onClick, text }) => {
   return (
@@ -18,7 +15,13 @@ const Button = ({ onClick, text }) => {
     </>
   )
 }
-
+const Anecdote = ({ anecdote }) => {
+  return (
+    <>
+      <div>{anecdote}</div>
+    </>
+  )
+}
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -51,15 +54,39 @@ const App = () => {
   const emptyVotesArray = new Array(anecdotes.length).fill(0)
   const [votes, setVotes] = useState(emptyVotesArray)
 
+  const indexOfMostVoted = votes.indexOf(Math.max(...votes))
+  const mostVoted = anecdotes[indexOfMostVoted]
+
   return (
     <>
-      <div>1.13</div>
+      <div>1.14</div>
+      <Header text='Anecdote of the day' />
       <Button onClick={addVote} text='vote' />
       <Button onClick={newAnecdote} text='next anecdote' />
-      <div>{anecdotes[selected]}</div>
+      <Anecdote anecdote={anecdotes[selected]} />
       <div>has {votes[selected]} votes</div>
+      <Header text='Anecdote with most votes' />
+      <Anecdote anecdote={mostVoted} />
+
+      <div>has {votes[indexOfMostVoted]} votes</div>
     </>
   )
 }
 
 export default App
+// 1.14 steps
+/*
+1)make an anecdote component and displays a given anecdote
+2) inside the app component, find the largest integer inside the votes array, find the index of that largest number, and then display anecdote of the largest vote as well as the largest vote
+*/
+
+//1.13 steps
+/*
+-first mistake was not realize i had to create an array of votes for each unique anecdote. 
+-Then I had to populate the original useState of the votes hook (need to figure out how to properly articulate this) to be an empty array of the lenght of the anecdotes array
+let l = new Array(anc.length).fill(0)
+-after createing the array I had to create an event handler for clicking the votes button. this handler would copy the array into a new variable, and update a specific element of that array based on what the current selected anecdote was (incrementing the vote)
+-i then displayed the specific element of the votes array whose index corresponded with the selected anecdote
+-Extra: finally I made it so that no two anecdotes could repeat, as simply generating a random element could result in repeats. This was done but simply updating the newAnecdote function by adding a conditional to see if the random number genrated was the same index of the anecdotes array that was previously displayed. if so it would loop until the random number was different.
+
+*/
